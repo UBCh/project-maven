@@ -41,7 +41,9 @@
     <build>
         <resources>
             <resource>
+                <!-- указываем папку которую должно считать ресурсами при создании архива -->
                 <directory>${project.build.directory}/dependency</directory>
+                <targetPath>lib/</targetPath>
             </resource>
         </resources>
         <plugins>
@@ -76,6 +78,7 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>3.4.0</version>
                 <configuration>
+                    <!-- создаем папку куда будут складыватьсы все необходимые для компиляции  -->
                     <outputDirectory>${project.build.directory}/dependency</outputDirectory>
                     <includeScope>compile</includeScope>
                 </configuration>
@@ -98,6 +101,8 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <!-- файл -main -->
                             <mainClass>org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader</mainClass>
                         </manifest>
                         <manifestEntries>
@@ -107,7 +112,16 @@
                     </archive>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <includes>
+                        <include>StrangeTest</include>
+                    </includes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
